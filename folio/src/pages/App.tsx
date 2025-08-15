@@ -11,15 +11,57 @@ import { easeOut, motion, useScroll, useTransform } from "framer-motion"
 import CustomCursor from "../components/Cursor"
 
 function App() {
+  // Store Lenis instance in ref so Header can access it
+  const lenisRef = useRef<Lenis | null>(null);
+
   useEffect(() => {
-    const lenis = new Lenis();
+    const lenis = new Lenis({
+      // duration: 1, // Smooth scroll duration
+      easing: (t: number) => 1 - Math.pow(1 - t, 3), // Custom easing
+      smoothWheel: true,
+    });
+
+    lenisRef.current = lenis;
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function raf(time: any) {
       lenis.raf(time);
       requestAnimationFrame(raf)
     }
     requestAnimationFrame(raf)
+
+    // Cleanup
+    return () => {
+      lenis.destroy();
+    };
   }, []);
+
+  // Scroll to section function that Header can use
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element && lenisRef.current) {
+      let offset;
+      switch (sectionId) {
+        case 'home':
+          offset = 120;
+          break;
+        case 'work':
+          offset = -250; // Scroll past the work section start
+          break;
+        case 'about':
+          offset = 120;
+          break;
+        default:
+          offset = 120;
+      }
+      const elementPosition = element.offsetTop - offset;
+
+      lenisRef.current.scrollTo(elementPosition, {
+        duration: 1.7,
+        easing: (t: number) => 1 - Math.pow(1 - t, 3) // easeOutCubic
+      });
+    }
+  };
 
   const sectionRef = useRef(null);
 
@@ -38,14 +80,9 @@ function App() {
     ease: easeOut
   });
 
-
   // Transform scroll progress to different speeds
-  // Beams move slower (30% of scroll speed)
   const beamsY = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  // Content moves at normal speed
   const contentY = useTransform(scrollYProgress, [0, 1], [0, 500]);
-
-
 
   return (
     <div className="bg-black cursor-none">
@@ -56,23 +93,20 @@ function App() {
         <div className="absolute inset-0 bg-black/20 backdrop-blur-xl"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent backdrop-blur-lg"></div>
 
-        {/* Header Content */}
+        {/* Header Content - Pass scrollToSection function */}
         <div className="relative">
-          <Header />
+          <Header scrollToSection={scrollToSection} />
         </div>
       </div>
 
       {/* Content Container */}
       <div className="pt-20">
-        {/* First Section with Sticky Footer */}
-        <section className="relative z-5">
-          {/* <div className="min-h-[calc(150vh-5rem)]"> */}
+        {/* First Section - HOME */}
+        <section id="home" className="relative z-5 min-h-screen">
           <div>
             <Hero />
           </div>
         </section>
-
-
 
         <motion.div
           className="fixed top-[7rem] left-0 right-0 z-30"
@@ -89,8 +123,9 @@ function App() {
           />
         </motion.div>
 
-        {/* Second Section */}
+        {/* Second Section - WORK */}
         <section
+          id="work"
           ref={sectionRef}
           className="min-h-[calc(220vh-5rem)] pt-40 relative overflow-hidden">
           {/* Beams Background */}
@@ -126,8 +161,8 @@ function App() {
           </motion.div>
         </section>
 
-        {/* Third Section */}
-        <section className="mt-40">
+        {/* Third Section - ABOUT */}
+        <section id="about" className="mt-40">
           <Profile />
         </section>
       </div>

@@ -1,20 +1,51 @@
 import { motion } from 'framer-motion';
 import AV_logo from '/src/assets/AV_logo.png';
 
-function Header() {
+interface HeaderProps {
+    scrollToSection: (sectionId: string) => void;
+}
+
+function Header({ scrollToSection }: HeaderProps) {
     return (
         <>
-            <motion.header initial={{ opacity: 0 }}
+            <motion.header
+                initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 2, delay: 0.7 }} className="flex flex-row justify-between items-center px-6 pt-6 pb-4.5  text-white">
-                <img
+                transition={{ duration: 2, delay: 0.7 }}
+                className="flex flex-row justify-between items-center px-6 pt-6 pb-4.5 text-white"
+            >
+                <motion.img
                     src={AV_logo}
                     alt="AV Logo"
-                    className="h-8" />
+                    className="h-8 cursor-pointer"
+                    onClick={() => scrollToSection('home')}
+                    whileHover={{ scale: 1.05 }}
+                />
                 <nav className="flex flex-col pr-4 text-right">
-                    <a href="#home" className="hover:text-gray-300 transition-colors font-montserrat font-light">home</a>
-                    <a href="#work" className="hover:text-gray-300 transition-colors font-montserrat font-light">work</a>
-                    <a href="#about" className="hover:text-gray-300 transition-colors font-montserrat font-light">about</a>
+                    <motion.button
+                        onClick={() => scrollToSection('home')}
+                        className="hover:text-gray-300 transition-colors font-montserrat font-light cursor-pointer text-right"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        home
+                    </motion.button>
+                    <motion.button
+                        onClick={() => scrollToSection('work')}
+                        className="hover:text-gray-300 transition-colors font-montserrat font-light cursor-pointer text-right"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        work
+                    </motion.button>
+                    <motion.button
+                        onClick={() => scrollToSection('about')}
+                        className="hover:text-gray-300 transition-colors font-montserrat font-light cursor-pointer text-right"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        about
+                    </motion.button>
                 </nav>
             </motion.header>
         </>
