@@ -31,7 +31,7 @@ function App() {
 
   const { scrollYProgress: dividerProgress } = useScroll({
     target: sectionRef,
-    offset: ["start 20vh", "end start"]
+    offset: ["start 50vh", "end start"]
   });
   const dividerOpacity = useTransform(dividerProgress, [0, 0.2], [0, 0.75]);
   const dividerScale = useTransform(dividerProgress, [0, 0.2], [0, 1], {
@@ -75,7 +75,7 @@ function App() {
 
 
         <motion.div
-          className="sticky top-[7rem] z-30"
+          className="fixed top-[7rem] left-0 right-0 z-30"
           style={{ opacity: dividerOpacity }}
         >
           {/* Blur for divider too */}

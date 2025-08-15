@@ -29,7 +29,7 @@ function Hero() {
 
     return (
         <div ref={containerRef}>
-            <div className="min-h-[calc(275vh-5rem)]">
+            <div className="min-h-[calc(300vh-5rem)]">
                 <div className="min-h-1.5 text-[rgb(205,205,205)]">
                     <div className="fixed inset-0 ">
                         {/* Aura/glow effect - only visible when in hero section */}
