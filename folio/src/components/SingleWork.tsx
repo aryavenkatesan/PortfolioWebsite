@@ -1,16 +1,21 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 function SingleWork({
     title,
     desc,
     image, // Add image prop
-    onClick
+    path
 }: {
     title: string;
     desc: string;
     image: string; // Add image type
-    onClick?: () => void
+    path: string
 }) {
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate(path); // Use the specific route instead of generic path
+    };
     return (
         <div className='opacity-85'>
             <motion.div
@@ -20,7 +25,7 @@ function SingleWork({
                 initial="initial"
                 whileHover="hover"
                 animate="initial"
-                onClick={onClick}
+                onClick={handleClick}
             >
                 <motion.div
                     className="absolute inset-0 bg-[rgb(206,205,205)] mix-blend-difference pointer-events-none z-10 origin-bottom rounded-sm"
