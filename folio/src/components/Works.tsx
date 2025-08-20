@@ -38,8 +38,8 @@ function Works() {
                         path="/VDart"
                     />
                     <SingleWork
-                        title="App Team"
-                        desc="full-stack mobile dev"
+                        title="Portfolio"
+                        desc="front-end web dev"
                         image="/src/assets/HeadshotCropped.png"
                         path="/VDart"
                     />

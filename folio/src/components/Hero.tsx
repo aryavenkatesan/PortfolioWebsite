@@ -97,8 +97,8 @@ function Hero() {
                 <motion.div initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 2, delay: 1.75 }}>
-                    <footer className="flex flex-row justify-between items-center p-6 bg-black text-black">
-                        <ContactSquares />
+                    <footer className="flex flex-row justify-between items-center p-6 bg-black text-black -translate-x-2 z-40">
+                        <ContactSquares onleft={true} />
 
                         {/* Animated SVG Arrow */}
                         <motion.svg
@@ -181,7 +181,7 @@ function Hero() {
 
                         <p className="-z-50">.</p>
                     </footer>
-                    <motion.div className="absolute inset-0 flex items-baseline justify-center" style={{ opacity: aura }}>
+                    <motion.div className="absolute inset-0 flex items-baseline justify-center pointer-events-none" style={{ opacity: aura }}>
                         <div className="w-full h-[150px] bg-white/6 rounded-full blur-3xl mb-20" />
                     </motion.div>
                 </motion.div>

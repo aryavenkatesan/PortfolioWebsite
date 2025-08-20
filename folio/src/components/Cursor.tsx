@@ -5,7 +5,7 @@ const CustomCursor = () => {
     const [mousePosition, setMousePosition] = useState({
         // start in the middle of viewport
         x: typeof window !== "undefined" ? window.innerWidth / 2 : 0,
-        y: typeof window !== "undefined" ? window.innerHeight * 0.3 : 0,
+        y: typeof window !== "undefined" ? window.innerHeight * 0.7 : 0,
     });
     const [isHovering, setIsHovering] = useState(false);
     const [hoverImage, setHoverImage] = useState<string | null>(null);
