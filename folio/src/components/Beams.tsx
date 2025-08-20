@@ -92,7 +92,7 @@ function extendMaterial<T extends THREE.Material = THREE.Material>(
 }
 
 const CanvasWrapper: FC<{ children: ReactNode }> = ({ children }) => (
-    <Canvas dpr={[1, 2]} frameloop="always" className="beams-container">
+    <Canvas dpr={1} frameloop="always" className="beams-container">
         {children}
     </Canvas>
 );
@@ -212,7 +212,7 @@ const Beams: FC<BeamsProps> = ({
             extendMaterial(THREE.MeshStandardMaterial, {
                 header: `
   varying vec3 vEye;
-  varying float vNoise;
+  varying float vNoiseVal;
   varying vec2 vUv;
   varying vec3 vPosition;
   uniform float time;
@@ -222,10 +222,18 @@ const Beams: FC<BeamsProps> = ({
   ${noise}`,
                 vertexHeader: `
   float getPos(vec3 pos) {
-    vec3 noisePos =
-      vec3(pos.x * 0., pos.y - uv.y, pos.z + time * uSpeed * 3.) * uScale;
+    vec3 noisePos = vec3(
+      pos.x * 0., 
+      pos.y - uv.y, 
+      pos.z + time * uSpeed * 3.
+    ) * uScale;
     return cnoise(noisePos);
   }
+
+  float getNoiseVal(vec3 pos) {
+    return cnoise(pos * uScale + vec3(0.0, time * uSpeed, 0.0));
+  }
+
   vec3 getCurrentPos(vec3 pos) {
     vec3 newpos = pos;
     newpos.z += getPos(pos);
@@ -238,16 +246,22 @@ const Beams: FC<BeamsProps> = ({
     vec3 tangentX = normalize(nextposX - curpos);
     vec3 tangentZ = normalize(nextposZ - curpos);
     return normalize(cross(tangentZ, tangentX));
-  }`,
+  }
+`,
                 fragmentHeader: "",
                 vertex: {
-                    "#include <begin_vertex>": `transformed.z += getPos(transformed.xyz);`,
-                    "#include <beginnormal_vertex>": `objectNormal = getNormal(position.xyz);`,
+                    "#include <begin_vertex>": `
+    transformed.z += getPos(transformed.xyz);
+    vNoiseVal = getNoiseVal(transformed.xyz);`,
+                    "#include <beginnormal_vertex>": `
+    objectNormal = getNormal(position.xyz);`,
                 },
                 fragment: {
                     "#include <dithering_fragment>": `
-    float randomNoise = noise(gl_FragCoord.xy);
-    gl_FragColor.rgb -= randomNoise / 15. * uNoiseIntensity;`,
+    // Stronger film-grain effect
+    float grain = rand(gl_FragCoord.xy + time*0.005) ;
+    gl_FragColor.rgb = mix(gl_FragColor.rgb, gl_FragColor.rgb * grain, 0.17 * uNoiseIntensity);
+  `,
                 },
                 material: { fog: true },
                 uniforms: {
@@ -354,7 +368,7 @@ const MergedPlanes = forwardRef<
     );
     useImperativeHandle(ref, () => mesh.current);
     const geometry = useMemo(
-        () => createStackedPlanesBufferGeometry(count, width, height, 0, 100),
+        () => createStackedPlanesBufferGeometry(count, width, height, 0, 30),
         [count, width, height]
     );
     useFrame((_, delta) => {

@@ -8,6 +8,9 @@ import Works from "../components/Works"
 import Lenis from "lenis"
 import Hero from "../components/Hero"
 import { easeOut, motion, useScroll, useTransform } from "framer-motion"
+import { useLocation } from "react-router-dom"
+
+
 
 function MainPage() {
     // Store Lenis instance in ref so Header can access it
@@ -50,21 +53,6 @@ function MainPage() {
         }
         requestAnimationFrame(raf)
 
-        const preloadBeams = () => {
-            // Force Beams to render off-screen immediately
-            const beamsContainer = document.getElementById('beams-preload');
-            if (beamsContainer) {
-                beamsContainer.style.opacity = '1';
-                // Small delay to let it initialize, then hide
-                setTimeout(() => {
-                    beamsContainer.style.opacity = '0';
-                }, 100);
-            }
-        };
-
-        // Pre-load after a short delay
-        setTimeout(preloadBeams, 500);
-
         // Cleanup
         return () => {
             lenis.destroy();
@@ -99,6 +87,17 @@ function MainPage() {
         }
     };
 
+    const location = useLocation();
+    useEffect(() => {
+        if (location.pathname === "/" && location.state?.backfromwork) {
+            // Coming specifically from /VDart
+            setTimeout(() => {
+                scrollToSection("work");
+            }, 50); // wait ~0.6s (match your fade duration)
+            window.history.replaceState({}, document.title);
+        }
+    }, [location]);
+
     const sectionRef = useRef(null);
 
     // Track scroll progress of the section
@@ -117,7 +116,7 @@ function MainPage() {
     });
 
     // Transform scroll progress to different speeds
-    const beamsY = useTransform(scrollYProgress, [0, 1], [0, -100]);
+    // const beamsY = useTransform(scrollYProgress, [0, 1], [0, -100]);
     const contentY = useTransform(scrollYProgress, [0, 1], [0, 500]);
 
     return (
@@ -165,12 +164,17 @@ function MainPage() {
                     className="min-h-[calc(220vh-5rem)] pt-40 relative overflow-hidden">
                     {/* Beams Background */}
                     <motion.div
-                        style={{ y: beamsY, willChange: 'transform' }}
-                        className="absolute top-0 left-0 right-0 bottom-0 opacity-60 bg-black z-10">
+                        key={location.key} // 👈 force remount on navigation
+                        className="absolute top-0 left-0 right-0 bottom-0 bg-black z-10"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 0.6 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                    >
                         <Beams
                             beamWidth={2}
-                            beamHeight={60}
-                            beamNumber={20}
+                            beamHeight={20}
+                            beamNumber={7}
                             lightColor="#cdcdcd"
                             speed={3}
                             noiseIntensity={1.75}
@@ -178,11 +182,8 @@ function MainPage() {
                             rotation={30}
                         />
 
-                        {/* Gradient overlays to fade beams into black background */}
                         <div className="absolute inset-0 pointer-events-none">
-                            {/* Top gradient */}
                             <div className="absolute top-0 left-0 right-0 h-100 bg-gradient-to-b from-black to-transparent"></div>
-                            {/* Bottom gradient */}
                             <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent"></div>
                         </div>
                     </motion.div>

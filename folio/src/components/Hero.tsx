@@ -38,7 +38,7 @@ function Hero() {
                                 className="absolute inset-0 flex items-center justify-center"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                transition={{ duration: 3, delay: 1 }}
+                                transition={{ duration: 3, delay: 1.6 }}
                             >
                                 <div className="w-[1200px] h-[350px] bg-white/10 rounded-full blur-3xl mb-20" />
                             </motion.div>
@@ -50,7 +50,7 @@ function Hero() {
                                     className="font-montserrat font-thin text-8xl text-center tracking-[0.1rem]"
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 1.5, delay: 0, ease: "easeOut" }}
+                                    transition={{ duration: 1.5, delay: 0.6, ease: "easeOut" }}
                                 >
                                     Arya Venkatesan
                                 </motion.h1>
@@ -59,11 +59,11 @@ function Hero() {
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{
-                                        opacity: { duration: 1.5, delay: 0.85 },
-                                        y: { duration: 0.65, delay: 0.85, ease: "easeOut" }
+                                        opacity: { duration: 1.5, delay: 1.45 },
+                                        y: { duration: 0.65, delay: 1.45, ease: "easeOut" }
                                     }}
                                 >
-                                    Mobile full-stack developer based in Cary, NC
+                                    Full-stack developer based in Cary, NC
                                 </motion.h2>
                             </motion.div>
 
@@ -79,8 +79,8 @@ function Hero() {
                                     initial={{ opacity: 0, y: 15 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{
-                                        opacity: { duration: 2, delay: 1 },
-                                        y: { duration: 0.5, delay: 1, ease: "easeOut" }
+                                        opacity: { duration: 2, delay: 1.6 },
+                                        y: { duration: 0.5, delay: 1.6, ease: "easeOut" }
                                     }}
                                 >
                                     I find better ways to do things
@@ -96,7 +96,7 @@ function Hero() {
             >
                 <motion.div initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 2, delay: 1.15 }}>
+                    transition={{ duration: 2, delay: 1.75 }}>
                     <footer className="flex flex-row justify-between items-center p-6 bg-black text-black">
                         <ContactSquares />
 

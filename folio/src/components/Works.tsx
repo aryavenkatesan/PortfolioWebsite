@@ -16,37 +16,37 @@ function Works() {
                     <SingleWork
                         title="Swipeshare"
                         desc="full-stack mobile dev + design"
-                        image="/src/assets/HeadshotCropped.png"
+                        image="/src/assets/SwipeshareSS.png"
                         path="/VDart"
                     />
                     <SingleWork
                         title="VDart"
                         desc="software development internship"
-                        image="/src/assets/HeadshotFull.png"
+                        image="/src/assets/VDartSS.png"
                         path="/VDart"
                     />
                     <SingleWork
                         title="Scenic"
                         desc="open source development"
-                        image="/src/assets/HeadshotCropped.png"
+                        image="/src/assets/Scenic.png"
                         path="/VDart"
                     />
                     <SingleWork
-                        title="TalkFish"
-                        desc="hackathon project"
-                        image="/src/assets/HeadshotCropped.png"
+                        title="UG Research"
+                        desc="autonomous vehicle lab"
+                        image="/src/assets/Research.png"
                         path="/VDart"
                     />
                     <SingleWork
-                        title="Rate-My-Dorm"
-                        desc="full-stack mobile dev + design"
+                        title="App Team"
+                        desc="full-stack mobile dev"
                         image="/src/assets/HeadshotCropped.png"
                         path="/VDart"
                     />
                     <SingleWork
                         title="Phizzicare"
                         desc="front-end"
-                        image="/src/assets/HeadshotCropped.png"
+                        image="/src/assets/phizzicareSS.png"
                         path="/VDart"
                     />
                 </section>

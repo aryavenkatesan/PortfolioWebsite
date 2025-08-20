@@ -11,7 +11,7 @@ function Header({ scrollToSection }: HeaderProps) {
             <motion.header
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 2, delay: 0.7 }}
+                transition={{ duration: 2, delay: 1.3 }}
                 className="flex flex-row justify-between items-center px-6 pt-6 pb-4.5 text-white"
             >
                 <motion.img

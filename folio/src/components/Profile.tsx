@@ -31,7 +31,7 @@ function Profile() {
                     </motion.p>
                 </div>
                 <div className='flex justify-end pr-10 pb-10'>
-                    <ContactSquares />
+                    <ContactSquares onleft={false} />
                 </div>
             </motion.div>
         </div>

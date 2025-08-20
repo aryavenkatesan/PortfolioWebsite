@@ -1,12 +1,23 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
+const pageVariants = {
+    initial: { opacity: 0, x: 50 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -50 },
+};
+
+
 function VDart() {
     const navigate = useNavigate();
 
     return (
-        <motion.div className="min-h-screen bg-black text-white">
-            <button onClick={() => navigate('/')} className="fixed top-8 left-8 z-50">← Back</button>
+        <motion.div className="min-h-screen bg-black text-white" variants={pageVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={{ duration: 0.5, ease: "easeInOut" }}>
+            <button onClick={() => navigate('/', { state: { backfromwork: true } })} className="fixed top-8 left-8 z-50">← Back</button>
 
             <div className="flex items-center justify-center min-h-screen px-8">
                 <motion.div
