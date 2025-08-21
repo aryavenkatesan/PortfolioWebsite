@@ -2,8 +2,13 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import MainPage from './MainPage'
 import Cursor from '../components/Cursor'
-import VDart from '../components/VDart'
+import VDart from './VDart'
 import { useEffect, useState } from 'react'
+import Swipeshare from './Swipeshare'
+import Scenic from './Scenic'
+import Research from './Research'
+import Portfolio from './Portfolio'
+import Phizzicare from './Phizzicare'
 
 function AppRoutes() {
   const location = useLocation();
@@ -31,7 +36,12 @@ function AppRoutes() {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<MainPage />} />
+          <Route path="/Swipeshare" element={<Swipeshare />} />
           <Route path="/VDart" element={<VDart />} />
+          <Route path="/Scenic" element={<Scenic />} />
+          <Route path="/Research" element={<Research />} />
+          <Route path="/Portfolio" element={<Portfolio />} />
+          <Route path="/Phizzicare" element={<Phizzicare />} />
         </Routes>
       </AnimatePresence>
     </div>

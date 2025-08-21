@@ -40,7 +40,7 @@ function Works() {
                     <SingleWork
                         title="Portfolio"
                         desc="front-end web dev"
-                        image="/src/assets/HeadshotCropped.png"
+                        image="/src/assets/portfolioSS.png"
                         path="/VDart"
                     />
                     <SingleWork

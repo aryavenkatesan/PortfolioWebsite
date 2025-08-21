@@ -15,9 +15,13 @@ function Hero() {
     })
 
     // Tagline animations
-    const taglineY = useTransform(scrollYProgress, [0, 0.55], [0, -100], {
-        ease: easeInOut
-    })
+    const isMobile = window.innerWidth < 768
+    const taglineY = useTransform(
+        scrollYProgress,
+        [0, 0.55],
+        [0, isMobile ? -68 : -100], // smaller shift on mobile
+        { ease: easeInOut }
+    )
     const taglineOpacity = useTransform(scrollYProgress, [0, 0.65, 0.825], [1, 1, 0], {
         ease: easeOut
     })
@@ -40,14 +44,14 @@ function Hero() {
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 3, delay: 1.6 }}
                             >
-                                <div className="w-[1200px] h-[350px] bg-white/10 rounded-full blur-3xl mb-20" />
+                                <div className="w-[1200px] h-[350px] bg-white/13 md:bg-white/10 rounded-full blur-3xl mb-20" />
                             </motion.div>
                         </motion.div>
                         <div className="flex flex-col justify-center h-full relative">
                             {/* Fading elements with initial fade-in */}
                             <motion.div style={{ opacity }}>
                                 <motion.h1
-                                    className="font-montserrat font-thin text-8xl text-center tracking-[0.1rem]"
+                                    className="font-montserrat font-thin text-4xl md:text-8xl text-center tracking-[0.1rem]"
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 1.5, delay: 0.6, ease: "easeOut" }}
@@ -55,7 +59,7 @@ function Hero() {
                                     Arya Venkatesan
                                 </motion.h1>
                                 <motion.h2
-                                    className="font-montserrat font-light text-2xl text-center tracking-[0.07rem] mt-4 mb-8"
+                                    className="font-montserrat font-light text-sm md:text-2xl text-center tracking-[0.045rem] md:tracking-[0.07rem] mt-4 mb-8"
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{
@@ -75,7 +79,7 @@ function Hero() {
                                 }}
                             >
                                 <motion.h2
-                                    className="font-montserrat font-light text-2xl tracking-[0.05rem] text-center mt-1 mb-7"
+                                    className="font-montserrat font-light text-sm md:text-2xl tracking-[0.045rem] md:tracking-[0.05rem] text-center mt-1 mb-7"
                                     initial={{ opacity: 0, y: 15 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{

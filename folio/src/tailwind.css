@@ -65,6 +65,8 @@
 
 @theme {
     --font-montserrat: Montserrat, "sans-serif";
+    --breakpoint-xl: 85rem;
+    --breakpoint-hl: 74rem;
 }
 
 * {

@@ -4,38 +4,73 @@ import headshot from '/src/assets/HeadshotCropped.png';
 
 function Profile() {
     return (
-        <div className='flex flex-row justify-between bg-black'>
-            <img src={headshot} className="h-[80vh] object-contain mr-15" />
+        <div className="relative bg-black min-h-screen w-full flex flex-col justify-center -mt-100 lg:-mt-50 lg:pr-10 xl:pr-20">
+            {/* Fixed Headshot bottom-left */}
+            <img
+                src={headshot}
+                className="
+                    absolute bottom-0 left-0 
+                    h-[25vh] sm:h-[35vh] lg:h-[56vh] hl:h-[69vh] xl:h-[78vh]
+                    object-contain
+                "
+                alt="Headshot"
+            />
 
+            {/* Fixed ContactSquares bottom-right */}
+            <div
+                className="
+                    absolute bottom-0 right-0
+                    pr-6 pb-4 sm:p-10 
+                "
+            >
+                <ContactSquares onleft={false} />
+            </div>
+
+            {/* Text Content */}
             <motion.div
-                className='flex flex-col justify-between font-montserrat font-extralight text-white'
+                className="
+                    mx-auto text-center 
+                    max-w-2xl px-6
+                    lg:ml-auto lg:max-w-3xl lg:text-right lg:text-white lg:mr-0
+                    font-montserrat font-extralight text-white
+                "
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.6 }}
-                transition={{ duration: 1.8, ease: "easeOut" }}
+                transition={{ duration: 1.8, ease: 'easeOut' }}
             >
-                <div className='mr-50 text-right'>
-                    <h1 className='tracking-tight text-7xl pb-3'>Nice to meet you!</h1>
-                    <h2 className='opacity-78 text-2xl'>Thanks for scrolling all the way down here :)</h2>
-                    <div className='mt-15' />
+                <div>
+                    <h1 className="tracking-tight text-3xl sm:text-4xl lg:text-6xl xl:text-7xl pb-3">
+                        Nice to meet you!
+                    </h1>
+                    <h2 className="opacity-80 text-base sm:text-lg lg:text-xl xl:text-2xl">
+                        Thanks for scrolling all the way down here :)
+                    </h2>
+                    <div className="mt-6 sm:mt-10" />
+
                     <motion.p
-                        initial={{ opacity: 0, y: 12 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.6 }}
-                        transition={{ duration: 1.3, ease: "easeOut", delay: 0.5 }}
+                        className="
+        text-sm md:text-base xl:text-lg 
+        mx-3 text-center
+        lg:mx-0 lg:ml-auto lg:text-right 
+        lg:max-w-xl xl:max-w-2xl
+        tracking-[0.045rem]
+    "
                     >
-                        I'm a CS student with an entrepreneurial vision. <br></br>
-                        I specialize in making things go brr. <br></br>
-                        Vestibulum rutrum quam vitae fringilla tincidunt. Suspendisse nec tortor urna. Ut laoreet sodales nisi, quis iaculis nulla iaculis vitae. <br></br>
-                        Vestibulum rutrum quam vitae fringilla tincidunt. Suspendisse nec tortor urna. Ut laoreet sodales nisi, quis iaculis nulla iaculis vitae.
+                        <span className="block leading-snug">
+                            I'm a CS student at UNC Chapel Hill bit by the entreprenurial bug.
+                        </span>
+                        <span className="block leading-snug mt-2">
+                            I find purpose in making a difference in people's lives, whether that's helping people find their next meal (Swipeshare) or devloping the autonomous vehicles of the future (Scenic).
+                        </span>
+                        <span className="block leading-snug mt-2">
+                            In my free time I like to play drums - available for gigs :) - and practice taekwondo (current treasurer of UNC TKD).
+                        </span>
                     </motion.p>
-                </div>
-                <div className='flex justify-end pr-10 pb-10'>
-                    <ContactSquares onleft={false} />
                 </div>
             </motion.div>
         </div>
-    )
+    );
 }
 
 export default Profile;

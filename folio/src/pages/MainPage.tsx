@@ -143,13 +143,13 @@ function MainPage() {
                 </section>
 
                 <motion.div
-                    className="fixed top-[7rem] left-0 right-0 z-30"
+                    className="fixed top-[5.5rem] lg:top-[6.5rem] left-0 right-0 z-30"
                     style={{ opacity: dividerOpacity }}
                 >
                     {/* Blur for divider too */}
                     <div className="absolute inset-0 bg-black/40 backdrop-blur-xl"></div>
                     <motion.div
-                        className="relative h-px bg-gray-400 mx-5"
+                        className="relative h-px bg-gray-400 mx-2 lg:mx-5"
                         style={{
                             scaleX: dividerScale,
                             transformOrigin: "center"
@@ -161,7 +161,7 @@ function MainPage() {
                 <section
                     id="work"
                     ref={sectionRef}
-                    className="min-h-[calc(220vh-5rem)] pt-40 relative overflow-hidden">
+                    className="min-h-[calc(220vh-5rem)] lg:min-h-[calc(180vh-5rem)] pt-40 relative overflow-hidden">
                     {/* Beams Background */}
                     <motion.div
                         key={location.key} // 👈 force remount on navigation

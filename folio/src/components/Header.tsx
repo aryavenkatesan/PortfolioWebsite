@@ -21,7 +21,7 @@ function Header({ scrollToSection }: HeaderProps) {
                     onClick={() => scrollToSection('home')}
                     whileHover={{ scale: 1.05 }}
                 />
-                <nav className="flex flex-col pr-4 text-right">
+                <nav className="flex flex-col pr-4 text-right text-xs md:text-sm">
                     <motion.button
                         onClick={() => scrollToSection('home')}
                         className="hover:text-gray-300 transition-colors font-montserrat font-light cursor-pointer text-right"

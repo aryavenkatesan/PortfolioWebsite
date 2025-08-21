@@ -46,9 +46,9 @@ function SingleWork({
                     }}
                 />
 
-                <div className="flex flex-row justify-between items-center px-20 my-10 gap-8 relative">
-                    <h1 className="font-montserrat font-extralight text-left text-gray-300 text-[4.5rem] opacity-100">{title}</h1>
-                    <p className="font-montserrat font-extralight opacity-100 text-right text-[2rem] text-gray-300">{desc}</p>
+                <div className="flex flex-col md:flex-row justify-between items-center px-10 mt-16 md:my-10 gap-2 md:gap-8 relative">
+                    <h1 className="font-montserrat font-extralight text-left text-gray-300 text-5xl md:text-[4.5rem] opacity-100">{title}</h1>
+                    <p className="font-montserrat font-extralight opacity-100 text-center md:text-right text-base md:text-[2rem] text-gray-300">{desc}</p>
                 </div>
             </motion.div>
         </div>

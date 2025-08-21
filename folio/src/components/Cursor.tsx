@@ -84,7 +84,7 @@ const CustomCursor = () => {
                     y: mousePosition.y - (isHovering ? 6 : 12),
                     width: isHovering ? 12 : 24,
                     height: isHovering ? 12 : 24,
-                    backgroundColor: isHovering ? '#343434' : '#ffffff',
+                    backgroundColor: isHovering ? '#343434' : '#eeeeee',
                     mixBlendMode: isHovering ? 'normal' : 'difference',
                 }}
                 transition={{
