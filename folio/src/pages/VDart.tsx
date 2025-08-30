@@ -137,11 +137,6 @@ function VDart() {
 
                 {/* MAIN CONTENT */}
                 <div className="flex flex-col items-center px-4 sm:px-8 pt-24 sm:pt-32 pb-8 sm:pb-12 lg:pb-28">
-                    {/* <div className="pb-20">
-                    <h1 className="text-4xl md:text-6xl font-extralight text-center tracking-wide font-montserrat">
-                        VDart
-                    </h1>
-                </div> */}
                     <motion.div
                         ref={imageRef}
                         style={{ y: imageY }}
@@ -240,7 +235,7 @@ function VDart() {
 
                         {/* Text on right */}
                         <motion.div
-                            className="flex-1 text-center lg:text-left lg:-translate-y-20"
+                            className="flex-1 text-center lg:text-left lg:translate-y-20"
                             initial={{ opacity: 0, y: 50 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, amount: 0.3 }}

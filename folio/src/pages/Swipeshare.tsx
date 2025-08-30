@@ -209,6 +209,14 @@ function Swipeshare() {
 
             </motion.div >
 
+            <motion.div
+                className="pointer-events-none fixed bottom-0 left-0 w-full h-64 bg-gradient-to-t from-white/11 to-transparent blur-9xl"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
+            >
+            </motion.div>
+
 
         </>
     )
