@@ -17,7 +17,7 @@ function Works() {
                         title="Swipeshare"
                         desc="full-stack mobile dev + design"
                         image="/src/assets/SwipeshareSS.png"
-                        path="/VDart"
+                        path="/Swipeshare"
                     />
                     <SingleWork
                         title="VDart"
@@ -29,25 +29,25 @@ function Works() {
                         title="Scenic"
                         desc="open source development"
                         image="/src/assets/Scenic.png"
-                        path="/VDart"
+                        path="/Scenic"
                     />
                     <SingleWork
                         title="UG Research"
                         desc="autonomous vehicle lab"
                         image="/src/assets/Research.png"
-                        path="/VDart"
+                        path="/Research"
                     />
                     <SingleWork
                         title="Portfolio"
-                        desc="front-end web dev"
+                        desc="front-end web dev + design"
                         image="/src/assets/portfolioSS.png"
-                        path="/VDart"
+                        path="/Portfolio"
                     />
                     <SingleWork
                         title="Phizzicare"
-                        desc="front-end"
+                        desc="front-end mobile dev"
                         image="/src/assets/phizzicareSS.png"
-                        path="/VDart"
+                        path="/Phizzicare"
                     />
                 </section>
             </div>

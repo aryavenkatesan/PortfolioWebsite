@@ -25,13 +25,13 @@ function ContactSquares({ onleft = true }: ContactSquaresProps) {
     };
 
     return (
-        <div className="flex flex-col gap-2 relative z-20">
+        <div className="flex flex-col gap-2 relative z- opacity-95">
             {/* LinkedIn */}
             <motion.a
                 href="https://www.linkedin.com/in/arya-venkatesan"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-6 h-6 flex items-center justify-center overflow-hidden cursor-pointer"
+                className="w-8 h-8 flex items-center justify-center overflow-hidden cursor-pointer"
                 variants={iconVariants}
                 initial="initial"
                 whileHover="hover"
@@ -50,7 +50,7 @@ function ContactSquares({ onleft = true }: ContactSquaresProps) {
                 href="https://github.com/aryavenkatesan"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-6 h-6 flex items-center justify-center overflow-hidden cursor-pointer"
+                className="w-8 h-8 flex items-center justify-center overflow-hidden cursor-pointer"
                 variants={iconVariants}
                 initial="initial"
                 whileHover="hover"
@@ -67,7 +67,7 @@ function ContactSquares({ onleft = true }: ContactSquaresProps) {
             {/* Email */}
             <motion.button
                 onClick={handleEmailClick}
-                className="w-6 h-6 flex items-center justify-center overflow-hidden cursor-pointer"
+                className="w-8 h-8 flex items-center justify-center overflow-hidden cursor-pointer"
                 variants={iconVariants}
                 initial="initial"
                 whileHover="hover"
@@ -89,7 +89,7 @@ function ContactSquares({ onleft = true }: ContactSquaresProps) {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
                         transition={{ duration: 0.5, ease: "easeInOut" }}
-                        className={`absolute ${onleft ? 'left-10' : 'right-10'} top-1/2 transform -translate-y-1/2 bg-black text-white text-xs px-3 pt-14 rounded shadow-lg font-montserrat font-light`}
+                        className={`absolute ${onleft ? 'left-10' : 'right-10'} top-1/2 transform -translate-y-1/2 bg-black text-white text-xs px-3 pt-18 rounded shadow-lg font-montserrat font-light`}
                     >
                         Email copied!
                     </motion.div>

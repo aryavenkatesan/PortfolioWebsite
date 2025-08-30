@@ -87,6 +87,20 @@ function MainPage() {
         }
     };
 
+    const HeroArrowScroll = () => {
+        const element = document.getElementById('work');
+
+        if (element && lenisRef.current) {
+            const offset = -250
+            const elementPosition = element.offsetTop - offset;
+
+            lenisRef.current.scrollTo(elementPosition, {
+                duration: 5,
+                easing: (t: number) => t < 0.5 ? t : 1 - Math.pow(-2 * t + 2, 3) / 2
+            });
+        }
+    };
+
     const location = useLocation();
     useEffect(() => {
         if (location.pathname === "/" && location.state?.backfromwork) {
@@ -138,7 +152,7 @@ function MainPage() {
                 {/* First Section - HOME */}
                 <section id="home" className="relative z-5 min-h-screen">
                     <div>
-                        <Hero />
+                        <Hero onArrowClick={HeroArrowScroll} />
                     </div>
                 </section>
 

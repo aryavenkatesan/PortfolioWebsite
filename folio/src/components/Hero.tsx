@@ -2,7 +2,7 @@ import { easeIn, easeInOut, easeOut, motion, useScroll, useTransform } from "fra
 import { useRef } from "react"
 import ContactSquares from "./ContactSquares"
 
-function Hero() {
+function Hero({ onArrowClick }: { onArrowClick?: () => void }) {
     const containerRef = useRef(null)
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -106,6 +106,7 @@ function Hero() {
 
                         {/* Animated SVG Arrow */}
                         <motion.svg
+                            className="cursor-pointer"
                             width="40"
                             height="100"
                             viewBox="0 0 40 100"
@@ -120,6 +121,7 @@ function Hero() {
                                 repeat: Infinity,
                                 ease: "easeInOut"
                             }}
+                            onClick={() => { onArrowClick?.() }}
                         >
                             {/* Arrow body with proper drawing animation */}
                             <motion.path
