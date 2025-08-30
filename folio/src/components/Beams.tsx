@@ -6,6 +6,7 @@ import {
     useMemo,
     type FC,
     type ReactNode,
+    useState,
 } from "react";
 
 import * as THREE from "three";
@@ -13,8 +14,6 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
 import { degToRad } from "three/src/math/MathUtils.js";
-
-
 
 type UniformValue = THREE.IUniform<unknown> | unknown;
 
@@ -91,11 +90,37 @@ function extendMaterial<T extends THREE.Material = THREE.Material>(
     return mat;
 }
 
-const CanvasWrapper: FC<{ children: ReactNode }> = ({ children }) => (
-    <Canvas dpr={1} frameloop="always" className="beams-container">
-        {children}
-    </Canvas>
-);
+const CanvasWrapper: FC<{ children: ReactNode }> = ({ children }) => {
+    // Add cleanup for Canvas
+    useEffect(() => {
+        return () => {
+            // Force garbage collection hint
+            if (typeof window !== 'undefined' && 'gc' in window) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (window as any).gc();
+            }
+        };
+    }, []);
+
+    return (
+        <Canvas
+            dpr={1}
+            frameloop="always"
+            className="beams-container"
+            gl={{
+                antialias: false,
+                powerPreference: "high-performance",
+                preserveDrawingBuffer: false,
+                failIfMajorPerformanceCaveat: false
+            }}
+            onCreated={({ gl }) => {
+                gl.setClearColor('#000000', 1);
+            }}
+        >
+            {children}
+        </Canvas>
+    );
+};
 
 const hexToNormalizedRGB = (hex: string): [number, number, number] => {
     const clean = hex.replace("#", "");
@@ -278,6 +303,37 @@ const Beams: FC<BeamsProps> = ({
         [speed, noiseIntensity, scale]
     );
 
+    // Cleanup material on unmount or when dependencies change
+    useEffect(() => {
+        const material = beamMaterial;
+
+        return () => {
+            if (material) {
+                material.dispose();
+                // Dispose of any textures in uniforms
+                Object.values(material.uniforms).forEach(uniform => {
+                    if (uniform.value instanceof THREE.Texture) {
+                        uniform.value.dispose();
+                    }
+                });
+            }
+        };
+    }, [beamMaterial]);
+
+    // Cleanup mesh on unmount
+    useEffect(() => {
+        return () => {
+            if (meshRef.current) {
+                meshRef.current.geometry.dispose();
+                if (Array.isArray(meshRef.current.material)) {
+                    meshRef.current.material.forEach(mat => mat.dispose());
+                } else {
+                    meshRef.current.material.dispose();
+                }
+            }
+        };
+    }, []);
+
     return (
         <CanvasWrapper>
             <group rotation={[0, 0, degToRad(rotation)]}>
@@ -351,6 +407,11 @@ function createStackedPlanesBufferGeometry(
     geometry.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
     geometry.setIndex(new THREE.BufferAttribute(indices, 1));
     geometry.computeVertexNormals();
+
+    // Mark for update to ensure proper cleanup
+    geometry.attributes.position.needsUpdate = true;
+    geometry.attributes.uv.needsUpdate = true;
+
     return geometry;
 }
 
@@ -366,14 +427,40 @@ const MergedPlanes = forwardRef<
     const mesh = useRef<THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>>(
         null!
     );
+    const frameId = useRef<number>(0);
+
     useImperativeHandle(ref, () => mesh.current);
+
     const geometry = useMemo(
-        () => createStackedPlanesBufferGeometry(count, width, height, 0, 30),
+        () => createStackedPlanesBufferGeometry(count, width, height, 0, 6),
         [count, width, height]
     );
+
+    // Cleanup geometry when dependencies change
+    useEffect(() => {
+        return () => {
+            geometry.dispose();
+        };
+    }, [geometry]);
+
+    // Animation with cleanup
     useFrame((_, delta) => {
-        mesh.current.material.uniforms.time.value += 0.1 * delta;
+        if (mesh.current && mesh.current.material.uniforms.time) {
+            frameId.current++;
+            mesh.current.material.uniforms.time.value += 0.06 * delta;
+        }
     });
+
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            if (mesh.current) {
+                mesh.current.geometry.dispose();
+                mesh.current.material.dispose();
+            }
+        };
+    }, []);
+
     return <mesh ref={mesh} geometry={geometry} material={material} />;
 });
 MergedPlanes.displayName = "MergedPlanes";
@@ -402,6 +489,7 @@ const DirLight: FC<{ position: [number, number, number]; color: string }> = ({
     color,
 }) => {
     const dir = useRef<THREE.DirectionalLight>(null!);
+
     useEffect(() => {
         if (!dir.current) return;
         const cam = dir.current.shadow.camera as THREE.Camera & {
@@ -417,7 +505,15 @@ const DirLight: FC<{ position: [number, number, number]; color: string }> = ({
         cam.right = 24;
         cam.far = 64;
         dir.current.shadow.bias = -0.004;
+
+        // Cleanup shadow map on unmount
+        return () => {
+            if (dir.current && dir.current.shadow && dir.current.shadow.map) {
+                dir.current.shadow.map.dispose();
+            }
+        };
     }, []);
+
     return (
         <directionalLight
             ref={dir}
@@ -425,6 +521,56 @@ const DirLight: FC<{ position: [number, number, number]; color: string }> = ({
             intensity={1}
             position={position}
         />
+    );
+};
+
+// Optional: Add a hook for manual garbage collection
+// eslint-disable-next-line react-refresh/only-export-components
+export const useManualGC = () => {
+    const forceGC = () => {
+        // Clear Three.js cache
+        if (THREE.Cache && THREE.Cache.clear) {
+            THREE.Cache.clear();
+        }
+
+        // Attempt to trigger browser GC (only works in some environments)
+        if (typeof window !== 'undefined' && 'gc' in window) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (window as any).gc();
+        }
+    };
+
+    return { forceGC };
+};
+
+// Optional: Performance Monitor Component
+export const PerformanceMonitor: FC = () => {
+    const [memoryInfo, setMemoryInfo] = useState<{
+        used: number;
+        limit: number;
+    } | null>(null);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if ('memory' in performance) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const memory = (performance as any).memory;
+                setMemoryInfo({
+                    used: memory.usedJSHeapSize / 1048576,
+                    limit: memory.jsHeapSizeLimit / 1048576
+                });
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    if (!memoryInfo) return null;
+
+    return (
+        <div className="fixed top-4 right-4 bg-black/80 text-white p-2 rounded text-xs font-mono">
+            Memory: {memoryInfo.used.toFixed(2)} MB / {memoryInfo.limit.toFixed(2)} MB
+        </div>
     );
 };
 

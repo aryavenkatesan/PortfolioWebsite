@@ -9,6 +9,7 @@ import Lenis from "lenis"
 import Hero from "../components/Hero"
 import { easeOut, motion, useScroll, useTransform } from "framer-motion"
 import { useLocation } from "react-router-dom"
+import React from "react"
 
 
 
@@ -133,6 +134,8 @@ function MainPage() {
     // const beamsY = useTransform(scrollYProgress, [0, 1], [0, -100]);
     const contentY = useTransform(scrollYProgress, [0, 1], [0, 500]);
 
+    const MemoBeams = React.memo(Beams);
+
     return (
         <div className="bg-black cursor-none">
             {/* Fixed Header with Blur Effect */}
@@ -179,23 +182,22 @@ function MainPage() {
                     {/* Beams Background */}
                     <motion.div
                         key={location.key} // 👈 force remount on navigation
-                        className="absolute top-0 left-0 right-0 bottom-0 bg-black z-10"
+                        className="absolute top-0 left-0 right-0 bottom-0 bg-black z-10 opacity-0"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 0.6 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
                     >
-                        <Beams
+                        <MemoBeams
                             beamWidth={2}
                             beamHeight={20}
                             beamNumber={7}
                             lightColor="#cdcdcd"
                             speed={3}
-                            noiseIntensity={1.75}
-                            scale={0.2}
+                            noiseIntensity={1.2}
+                            scale={0.3}
                             rotation={30}
                         />
-
                         <div className="absolute inset-0 pointer-events-none">
                             <div className="absolute top-0 left-0 right-0 h-100 bg-gradient-to-b from-black to-transparent"></div>
                             <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent"></div>
