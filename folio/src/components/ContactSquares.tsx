@@ -31,7 +31,7 @@ function ContactSquares({ onleft = true }: ContactSquaresProps) {
                 href="https://www.linkedin.com/in/arya-venkatesan"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center overflow-hidden cursor-pointer"
+                className="w-6 h-6 lg:w-8 lg:h-8 flex items-center justify-center overflow-hidden cursor-pointer"
                 variants={iconVariants}
                 initial="initial"
                 whileHover="hover"
@@ -50,7 +50,7 @@ function ContactSquares({ onleft = true }: ContactSquaresProps) {
                 href="https://github.com/aryavenkatesan"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center overflow-hidden cursor-pointer"
+                className="w-6 h-6 lg:w-8 lg:h-8 flex items-center justify-center overflow-hidden cursor-pointer"
                 variants={iconVariants}
                 initial="initial"
                 whileHover="hover"
@@ -67,7 +67,7 @@ function ContactSquares({ onleft = true }: ContactSquaresProps) {
             {/* Email */}
             <motion.button
                 onClick={handleEmailClick}
-                className="w-8 h-8 flex items-center justify-center overflow-hidden cursor-pointer"
+                className="w-6 h-6 lg:w-8 lg:h-8 flex items-center justify-center overflow-hidden cursor-pointer"
                 variants={iconVariants}
                 initial="initial"
                 whileHover="hover"

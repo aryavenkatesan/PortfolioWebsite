@@ -144,20 +144,15 @@ function Phizzicare() {
                                 transition={{ duration: 1.8, ease: 'easeOut' }}
                             >
                                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-light mb-4 sm:mb-6 text-white/92 font-montserrat">
-                                    Our Story
+                                    The Motivation
                                 </h2>
                                 <p className="text-sm sm:text-base md:text-lg font-extralight opacity-90 tracking-[0.02rem] sm:tracking-[0.03rem] md:tracking-[0.045rem] leading-relaxed text-white/80 font-montserrat">
-                                    "Why couldn't I just make an app for this?" I thought as I waited on a friend alongside a group of people.
-                                    This friend in question had 30 extra dining hall meal swipes that they were going to "give" to the rest of us since the semester was ending in one week and the swipes would be rendered useless.
+                                    In the middle of brainstorming ideas for a hackathon, two of my group-mates simultaneously got a notification from Duolingo.
+                                    We immediately took a break in the middle of the meeting to quickly get the lesson done and out of the way, and then kept trying to come up with ideas.
                                     <br />
                                     <br />
-                                    Unfortunately, they had to be present at the dining hall and use their ID to permit us entry.
-                                    I chatted with the crowd, learning that people would be willing to sell their surplus swipes for money, or buy these swipes for a cheap price.
-                                    <br />
-                                    <br />
-                                    That's when the idea for Swipeshare was born.
-                                    <br />
-                                    <br />
+                                    That's when it hit us - forming habits to do daily tasks that need to be done is a hard thing, and yet there's an easily accessible way right on our phones.
+                                    Through incentivization of doing something as mundane as your physical therapy exercises, we could motivate more people to recover sooner, and keep those same people healthy.
                                 </p>
                             </motion.div>
                             <div className="py-2 sm:py-3" />
@@ -171,15 +166,10 @@ function Phizzicare() {
                                     Development
                                 </h2>
                                 <p className="text-sm sm:text-base md:text-lg font-extralight opacity-90 tracking-[0.02rem] sm:tracking-[0.03rem] md:tracking-[0.045rem] leading-relaxed text-white/80 font-montserrat">
-                                    I got a team of developers together and we started building over the summer.
-                                    Utilizing Flutter for maximum cross-platform compatibility and Firebase for its robust free tier and strong synergy with the Flutter frontend, we made much progress.
-                                    <br />
-                                    <br />
-                                    Currently we are expanding the marketing team and planning to launch later this semester (Nov 2025).
-                                    <br />
-                                    <br />
-                                    <br />
-                                    Stay tuned for more updates!
+                                    The full MVP for this idea was completed in 24 hours, by a team of 4 including myself.
+                                    We used TSX with React Native and Expo.
+                                    For chatbot support, we system prompted Gemini through API calls.
+                                    We also figured out how to use Computer Vision to check if a user was actually performing their tasks using OpenCV, but unfortunatley ran out of time trying to record video through React Native.
                                 </p>
                             </motion.div>
                         </div>
@@ -208,7 +198,7 @@ function Phizzicare() {
                     </div>
                 </div>
 
-                {/* Horizontal scrolling gallery */}
+                {/* Gallery Section */}
                 <div className="w-full pb-20 lg:pb-10 pt-0 lg:pt-30">
                     <motion.h2
                         className="text-2xl sm:text-3xl md:text-4xl font-light mb-8 lg:mb-6 text-white/92 font-montserrat text-center"
