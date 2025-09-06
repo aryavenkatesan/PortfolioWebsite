@@ -1,8 +1,5 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import linkedin from '/src/assets/linkedinLogo.png';
-import github from '/src/assets/githubLogo.png';
-import email from '/src/assets/emailIcon.png';
 
 type ContactSquaresProps = {
     onleft?: boolean; // optional
@@ -25,7 +22,7 @@ function ContactSquares({ onleft = true }: ContactSquaresProps) {
     };
 
     return (
-        <div className="flex flex-col gap-2 relative z- opacity-95">
+        <div className="flex flex-col gap-2 relative z- opacity-96.5">
             {/* LinkedIn */}
             <motion.a
                 href="https://www.linkedin.com/in/arya-venkatesan"
@@ -38,7 +35,7 @@ function ContactSquares({ onleft = true }: ContactSquaresProps) {
                 transition={{ duration: 0.3, ease: "easeOut" }}
             >
                 <motion.img
-                    src={linkedin}
+                    src='/assets/linkedinLogo.png'
                     alt="LinkedIn"
                     className="w-full h-full object-contain"
                     variants={iconVariants}
@@ -57,7 +54,7 @@ function ContactSquares({ onleft = true }: ContactSquaresProps) {
                 transition={{ duration: 0.3, ease: "easeOut" }}
             >
                 <motion.img
-                    src={github}
+                    src='/assets/githubLogo.png'
                     alt="GitHub"
                     className="w-full h-full object-contain"
                     variants={iconVariants}
@@ -74,7 +71,7 @@ function ContactSquares({ onleft = true }: ContactSquaresProps) {
                 transition={{ duration: 0.3, ease: "easeOut" }}
             >
                 <motion.img
-                    src={email}
+                    src='/assets/emailIcon.png'
                     alt="Email"
                     className="w-full h-full object-contain"
                     variants={iconVariants}

@@ -1,7 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AV_logo from "/src/assets/AV_logo.png";
 import Lenis from "lenis";
 
 const pageVariants = {
@@ -99,7 +98,7 @@ function Swipeshare() {
                 >
                     {/* Logo (clickable) */}
                     <motion.img
-                        src={AV_logo}
+                        src="/assets/AV_logo.png"
                         alt="AV Logo"
                         className="h-8 cursor-pointer"
                         onClick={() =>
@@ -138,7 +137,7 @@ function Swipeshare() {
                         >
                             <div className="flex flex-col">
                                 <img
-                                    src="/src/assets/SwipeshareSS.png"
+                                    src="/assets/SwipeshareSS.png"
                                     className="w-full max-w-[280px] sm:max-w-[350px] md:max-w-[400px] lg:max-w-[450px] xl:max-w-[500px] h-auto object-contain rounded-lg shadow-2xl"
                                     alt="Stylish app homepage UI"
                                 />

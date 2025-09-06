@@ -1,7 +1,6 @@
 import { easeIn, easeOut, motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AV_logo from "/src/assets/AV_logo.png";
 import Lenis from "lenis";
 
 const pageVariants = {
@@ -116,7 +115,7 @@ function Scenic() {
                 >
                     {/* Logo (clickable) */}
                     <motion.img
-                        src={AV_logo}
+                        src="/assets/AV_logo.png"
                         alt="AV Logo"
                         className="h-8 cursor-pointer"
                         onClick={() =>
@@ -155,15 +154,15 @@ function Scenic() {
                         }}
                     >
                         <img
-                            src="/src/assets/Scenic.png"
-                            className="w-full max-w-xs sm:max-w-2xl lg:max-w-4xl max-h-[50vh] sm:max-h-[65vh] lg:max-h-[80vh] object-contain rounded-lg shadow-2xl"
+                            src="/assets/Scenic.png"
+                            className="w-full max-w-xs sm:max-w-2xl lg:max-w-6xl max-h-[50vh] sm:max-h-[65vh] lg:max-h-[90vh] object-contain rounded-lg shadow-2xl"
                             alt="VDart Project Screenshot"
                         />
                     </motion.div>
                 </div>
 
                 {/* DIVIDER SECTIONS */}
-                <div className="container mx-auto pb-16 sm:pb-24 lg:pb-36 font-montserrat font-light bg-neutral-1000 rounded-xl sm:rounded-3xl text-center">
+                <div className="container mx-auto pb-16 sm:pb-24 lg:pb-36 lg:pt-16 font-montserrat font-light bg-neutral-1000 rounded-xl sm:rounded-3xl text-center">
                     <div className="flex flex-col px-4 sm:px-10 lg:flex-row items-start lg:items-stretch justify-center gap-8 sm:gap-12 lg:gap-0">
                         {/* Summary */}
                         <div className="flex-1 px-4 sm:px-6 lg:px-12">
@@ -177,7 +176,7 @@ function Scenic() {
                             <motion.p className="text-base sm:text-lg font-extralight opacity-90 text-center lg:text-left tracking-[0.03rem] sm:tracking-[0.045rem] leading-relaxed sm:leading-snug text-white/80"
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, amount: 0.4 }}
+                                viewport={{ once: true, amount: 0.9 }}
                                 transition={{ duration: 1.8, ease: 'easeOut' }}>
                                 Scenic is an open-source, domain-specific, probabilistic programming language for describing scenes.
                                 From autonomous driving, to aviation, and even some VR applications, Scenic allows you to generate scenarios that allow models to practice specifically what their current training overlooks.
@@ -201,7 +200,7 @@ function Scenic() {
                             <motion.p className="text-base sm:text-lg font-extralight opacity-90 text-center lg:text-left tracking-[0.03rem] sm:tracking-[0.045rem] leading-relaxed sm:leading-snug text-white/80"
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, amount: 0.1 }}
+                                viewport={{ once: true, amount: 0.9 }}
                                 transition={{ duration: 1.8, ease: 'easeOut' }}
                             >
                                 For the driving domain specifically, there was a lot of outdated code for the controllers that needed to be overhauled.
@@ -214,7 +213,7 @@ function Scenic() {
 
                 <div className="lg:h-[160px]" />
 
-                <div className="container mx-auto px-4 sm:px-8 pb-24 lg:pb-32">
+                <div className="container mx-auto px-4 sm:px-8 pb-24 lg:pb-56">
                     <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
                         {/* Image on left */}
                         <motion.div
@@ -228,7 +227,7 @@ function Scenic() {
                         >
                             <div className="flex flex-col items-center">
                                 <img
-                                    src="/src/assets/ScenicGraph.png"
+                                    src="/assets/ScenicGraph.png"
                                     className="w-full max-w-[300px] sm:max-w-[400px] lg:max-w-[700px] h-auto object-contain rounded-lg shadow-2xl"
                                     alt="VDart AR Feature"
                                 />

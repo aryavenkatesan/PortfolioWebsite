@@ -1,6 +1,5 @@
 import { easeOut, motion, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import AV_logo from "/src/assets/AV_logo.png";
 import { useEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 
@@ -105,7 +104,7 @@ function Research() {
                 >
                     {/* Logo (clickable) */}
                     <motion.img
-                        src={AV_logo}
+                        src="/assets/AV_logo.png"
                         alt="AV Logo"
                         className="h-8 cursor-pointer"
                         onClick={() =>
@@ -143,7 +142,7 @@ function Research() {
                         }}
                     >
                         <video
-                            src="/src/assets/AutonomousDriving.mov"
+                            src="/assets/AutonomousDriving.mov"
                             className="w-full max-w-xs sm:max-w-2xl lg:max-w-4xl max-h-[50vh] sm:max-h-[65vh] lg:max-h-[80vh] object-contain rounded-lg shadow-2xl transform scale-101"
                             controls
                             muted

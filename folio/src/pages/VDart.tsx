@@ -1,6 +1,5 @@
 import { easeIn, easeOut, motion, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import AV_logo from "/src/assets/AV_logo.png";
 import { useEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 
@@ -112,7 +111,7 @@ function VDart() {
                 >
                     {/* Logo (clickable) */}
                     <motion.img
-                        src={AV_logo}
+                        src="/assets/AV_logo.png"
                         alt="AV Logo"
                         className="h-8 cursor-pointer"
                         onClick={() =>
@@ -150,7 +149,7 @@ function VDart() {
                         }}
                     >
                         <img
-                            src="/src/assets/VDartSS.png"
+                            src="/assets/VDartSS.png"
                             className="w-full max-w-xs sm:max-w-2xl lg:max-w-4xl max-h-[50vh] sm:max-h-[65vh] lg:max-h-[80vh] object-contain rounded-lg shadow-2xl"
                             alt="VDart Project Screenshot"
                         />
@@ -172,7 +171,7 @@ function VDart() {
                             <motion.p className="text-base sm:text-lg font-extralight opacity-90 text-center lg:text-left tracking-[0.03rem] sm:tracking-[0.045rem] leading-relaxed sm:leading-snug text-white/80"
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, amount: 0.4 }}
+                                viewport={{ once: true, amount: 0.8 }}
                                 transition={{ duration: 1.8, ease: 'easeOut' }}>
                                 Although VDart is a staffing consulting company worth over $250 Million operating in 12 countries with over 600 employees, they still didn't have a company Intranet.
                                 This project for a centralized internal communication website for easy access to all things VDart, from HR requests off to company-wide announcements, fell to the 2025 Intern team.
@@ -196,7 +195,7 @@ function VDart() {
                             <motion.p className="text-base sm:text-lg font-extralight opacity-90 text-center lg:text-left tracking-[0.03rem] sm:tracking-[0.045rem] leading-relaxed sm:leading-snug text-white/80"
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, amount: 0.1 }}
+                                viewport={{ once: true, amount: 0.8 }}
                                 transition={{ duration: 1.8, ease: 'easeOut' }}
                             >
                                 Used HTML, CSS, and inbuilt Javascript to create the Intranet.
@@ -209,7 +208,7 @@ function VDart() {
 
                 <div className='h-[50px]' />
 
-                <div className="container mx-auto px-4 sm:px-8 pb-24 lg:pb-16">
+                <div className="container mx-auto px-4 sm:px-8 pb-24 lg:pb-32">
                     <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
                         {/* Image on left */}
                         <motion.div
@@ -223,7 +222,7 @@ function VDart() {
                         >
                             <div className="flex flex-col items-center">
                                 <img
-                                    src="/src/assets/VDartAR.jpeg"
+                                    src="/assets/VDartAR.jpeg"
                                     className="w-full max-w-[300px] sm:max-w-[400px] lg:max-w-[500px] h-auto object-contain rounded-lg shadow-2xl"
                                     alt="VDart AR Feature"
                                 />

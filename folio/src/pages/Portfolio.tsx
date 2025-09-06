@@ -2,7 +2,7 @@ import { AnimatePresence, easeOut, motion, useScroll, useTransform } from "frame
 import Lenis from "lenis";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AV_logo from "/src/assets/AV_logo.png";
+
 
 
 const pageVariants = {
@@ -75,13 +75,22 @@ function Portfolio() {
     );
 
     const [currentIndex, setCurrentIndex] = useState(0);
+
     const images = [
-        "/src/assets/P1.png",
-        "/src/assets/P4.png",
-        "/src/assets/P2.png",
-        "/src/assets/P3.png",
-        "/src/assets/portfolioSS.png",
+        "/assets/P1.png",
+        "/assets/P4.png",
+        "/assets/P2.png",
+        "/assets/P3.png",
+        "/assets/portfolioSS.png",
     ];
+
+    useEffect(() => {
+        // Preload all gallery images
+        images.forEach((src) => {
+            const img = new Image();
+            img.src = src;
+        });
+    }, []); // Empty dependency array = runs once on mount
 
     return (
         <>
@@ -115,7 +124,7 @@ function Portfolio() {
                 >
                     {/* Logo (clickable) */}
                     <motion.img
-                        src={AV_logo}
+                        src="/assets/AV_logo.png"
                         alt="AV Logo"
                         className="h-8 cursor-pointer"
                         onClick={() =>
@@ -153,7 +162,7 @@ function Portfolio() {
                         }}
                     >
                         <img
-                            src="/src/assets/PortfolioFigma.png"
+                            src="/assets/PortfolioFigma.png"
                             className="w-full max-w-xs sm:max-w-2xl lg:max-w-4xl max-h-[50vh] sm:max-h-[65vh] lg:max-h-[80vh] object-contain rounded-lg shadow-2xl"
                             alt="Cluttered Figma Board"
                         />
@@ -191,7 +200,7 @@ function Portfolio() {
             </motion.div >
 
             {/* Gallery Section */}
-            <div className="w-full pb-20 lg:pb-10 pt-0 lg:pt-30">
+            <div className="w-full pb-20 lg:pb-28 pt-0 lg:pt-30">
                 <motion.h2
                     className="text-2xl sm:text-3xl md:text-4xl font-light mb-8 lg:mb-6 text-white/92 font-montserrat text-center"
                     initial={{ opacity: 0, y: 30 }}

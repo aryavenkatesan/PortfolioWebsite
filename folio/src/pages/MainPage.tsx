@@ -20,7 +20,7 @@ function MainPage() {
     useEffect(() => {
         const lenis = new Lenis({
             // duration: 1, // Smooth scroll duration
-            easing: (t: number) => 1 - Math.pow(1 - t, 3), // Custom easing
+            easing: (t: number) => 1 - Math.pow(1 - t, 2), // Custom easing
             smoothWheel: true,
         });
 
@@ -160,7 +160,7 @@ function MainPage() {
                 </section>
 
                 <motion.div
-                    className="fixed top-[5.5rem] lg:top-[6.5rem] left-0 right-0 z-30"
+                    className="fixed top-[5.5rem] lg:top-[7rem] left-0 right-0 z-30"
                     style={{ opacity: dividerOpacity }}
                 >
                     {/* Blur for divider too */}
@@ -178,7 +178,7 @@ function MainPage() {
                 <section
                     id="work"
                     ref={sectionRef}
-                    className="min-h-[calc(220vh-5rem)] lg:min-h-[calc(180vh-5rem)] pt-40 relative overflow-hidden">
+                    className="min-h-[calc(170vh-5rem)] [@media(min-height:666px)_and_(max-height:736px)]:min-h-[calc(250vh-5rem)] lg:min-h-[calc(180vh-5rem)] pt-40 relative overflow-hidden">
                     {/* Beams Background */}
                     <motion.div
                         key={location.key} // 👈 force remount on navigation
@@ -214,7 +214,7 @@ function MainPage() {
                 </section>
 
                 {/* Third Section - ABOUT */}
-                <section id="about" className="mt-40">
+                <section id="about" className="mt-0">
                     <Profile />
                 </section>
             </div>

@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import AV_logo from '/src/assets/AV_logo.png';
 
 interface HeaderProps {
     scrollToSection: (sectionId: string) => void;
@@ -15,13 +14,13 @@ function Header({ scrollToSection }: HeaderProps) {
                 className="flex flex-row justify-between items-center px-6 pt-6 pb-4.5 text-white"
             >
                 <motion.img
-                    src={AV_logo}
+                    src='/assets/AV_logo.png'
                     alt="AV Logo"
                     className="h-8 cursor-pointer"
                     onClick={() => scrollToSection('home')}
                     whileHover={{ scale: 1.05 }}
                 />
-                <nav className="flex flex-col pr-4 text-right text-xs md:text-sm">
+                <nav className="flex flex-col pr-4 text-right text-xs md:text-base md:transform-y-2">
                     <motion.button
                         onClick={() => scrollToSection('home')}
                         className="hover:text-gray-300 transition-colors font-montserrat font-light cursor-pointer text-right"

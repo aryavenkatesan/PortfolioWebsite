@@ -14,6 +14,41 @@ const CustomCursor = () => {
 
     useEffect(() => {
         setHasMounted(true); // trigger fade-in when component mounts
+
+        const forceHideCursor = () => {
+            // Apply to body
+            document.body.style.cursor = 'none';
+
+            // Apply to all elements
+            const allElements = document.querySelectorAll('*');
+            allElements.forEach((element) => {
+                (element as HTMLElement).style.cursor = 'none';
+            });
+
+            // Also check for any style tags that might override
+            const styles = document.querySelectorAll('style');
+            styles.forEach((style) => {
+                if (style.innerHTML.includes('cursor:') && !style.innerHTML.includes('cursor: none')) {
+                    style.innerHTML = style.innerHTML.replace(/cursor:\s*[^;]+/g, 'cursor: none');
+                }
+            });
+        };
+
+        // Initial hide
+        forceHideCursor();
+
+        // Set up interval to re-apply every second
+        const cursorInterval = setInterval(forceHideCursor, 1000);
+
+        // Also re-apply on any mouse movement to catch hover states
+        const handleMouseMove = () => {
+            document.body.style.cursor = 'none';
+        };
+        return () => {
+            clearInterval(cursorInterval);
+            window.removeEventListener('mousemove', handleMouseMove);
+            document.body.style.cursor = '';
+        };
     }, []);
 
     useEffect(() => {
@@ -90,8 +125,8 @@ const CustomCursor = () => {
                 transition={{
                     opacity: { duration: 2.5, ease: 'easeIn' }, // smooth fade in once
                     type: "spring",
-                    damping: isHovering ? 100 : 40,
-                    stiffness: isHovering ? 300 : 200,
+                    damping: isHovering ? 150 : 30,
+                    stiffness: isHovering ? 300 : 100,
                     mass: 0.5,
                 }}
             />
@@ -112,7 +147,7 @@ const CustomCursor = () => {
                         exit={{ opacity: 0, scale: 0.8, rotate: 5 }}
                         transition={{
                             type: "spring",
-                            damping: 90,
+                            damping: 135,
                             stiffness: 300,
                             mass: 0.5,
                         }}
