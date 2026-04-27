@@ -1,7 +1,8 @@
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Lenis from "lenis";
+import { PageBottomGlow, ProjectHeader } from "../components/ProjectChrome";
+import { useMediaQuery } from "../hooks/useMediaQuery";
+import { useResetScrollOnMount } from "../hooks/useResetScrollOnMount";
 
 const pageVariants = {
     initial: { opacity: 0, x: 50 },
@@ -9,53 +10,19 @@ const pageVariants = {
     exit: { opacity: 0, x: -50 },
 };
 
+const images = [
+    "/assets/Pc1.png",
+    "/assets/Pc2.png",
+    "/assets/Pc3.png",
+    "/assets/Pc4.png",
+    "/assets/Pc5.png"
+];
+
 function Phizzicare() {
     const containerRef = useRef(null);
     const imageRef = useRef(null);
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth < 1024);
-        };
-
-        // Check on mount
-        checkMobile();
-
-        // Check on resize
-        window.addEventListener('resize', checkMobile);
-
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
-
-    useEffect(() => {
-        const lenis = new Lenis({
-            smoothWheel: true,
-            duration: 1.2,
-            easing: (t) => 1 - Math.pow(1 - t, 3), // easeOutCubic
-        });
-
-        lenis.scrollTo(0, { immediate: true });
-
-        function raf(time: number) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-
-        requestAnimationFrame(raf);
-
-        return () => {
-            lenis.destroy();
-        };
-    }, []);
-
-    const navigate = useNavigate();
-
-    const { scrollY } = useScroll();
-
-    const bgOpacity = useTransform(scrollY, [0, 160], [0, 0.6]);
-    const blurAmount = useTransform(scrollY, [0, 160], [0, 48]);
-    const borderOpacity = useTransform(scrollY, [0, 160], [0.2, 0.2]);
+    const isMobile = useMediaQuery("(max-width: 1023px)");
+    useResetScrollOnMount();
 
     const { scrollYProgress } = useScroll({
         target: imageRef,
@@ -65,13 +32,6 @@ function Phizzicare() {
     const imageY = useTransform(scrollYProgress, [0, 1], [isMobile ? 0 : -60, isMobile ? 0 : 160]);
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const images = [
-        "/assets/Pc1.png",
-        "/assets/Pc2.png",
-        "/assets/Pc3.png",
-        "/assets/Pc4.png",
-        "/assets/Pc5.png"
-    ];
 
     useEffect(() => {
         // Preload all gallery images
@@ -79,7 +39,7 @@ function Phizzicare() {
             const img = new Image();
             img.src = src;
         });
-    }, []); // Empty dependency array = runs once on mount
+    }, []);
 
 
 
@@ -95,48 +55,7 @@ function Phizzicare() {
                 transition={{ duration: 0.5, ease: "easeInOut" }}
             >
 
-                {/* HEADER */}
-                <motion.header
-                    className="fixed top-0 left-0 w-full z-10 flex flex-row items-center justify-between px-4 sm:px-8 py-8"
-                    style={{
-                        backgroundColor: useTransform(
-                            bgOpacity,
-                            (opacity) => `rgba(0, 0, 0, ${opacity})`
-                        ),
-                        backdropFilter: useTransform(
-                            blurAmount,
-                            (blur) => `blur(${blur}px)`
-                        ),
-                        borderBottom: useTransform(
-                            borderOpacity,
-                            (opacity) => `1px solid rgba(255, 255, 255, ${opacity})`
-                        ),
-                    }}
-                >
-                    {/* Logo (clickable) */}
-                    <motion.img
-                        src="/assets/AV_logo.png"
-                        alt="AV Logo"
-                        className="h-8 cursor-pointer"
-                        onClick={() =>
-                            navigate("/", { state: { backfromwork: true } })
-                        }
-                        whileHover={{ scale: 1.05, opacity: 0.9 }}
-                        transition={{ duration: 0.2 }}
-                    />
-
-                    {/* Back Button */}
-                    <motion.button
-                        whileHover={{ scale: 0.95, opacity: 0.85 }}
-                        whileTap={{ scale: 1.0, opacity: 0.95 }}
-                        onClick={() =>
-                            navigate("/", { state: { backfromwork: true } })
-                        }
-                        className="font-montserrat font-light"
-                    >
-                        ← back
-                    </motion.button>
-                </motion.header>
+                <ProjectHeader />
 
 
                 {/* Update the container div */}
@@ -227,7 +146,7 @@ function Phizzicare() {
                             {/* Left Arrow */}
                             <button
                                 onClick={() => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length)}
-                                className="absolute left-0 sm:left-4 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-2 m-2 sm:p-3 transition-all duration-300"
+                                className="absolute left-0 sm:left-4 z-10 bg-white/10 hover:bg-white/20 border border-white/15 rounded-full p-2 m-2 sm:p-3 transition-all duration-300"
                             >
                                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -253,7 +172,7 @@ function Phizzicare() {
                             {/* Right Arrow */}
                             <button
                                 onClick={() => setCurrentIndex((prev) => (prev + 1) % images.length)}
-                                className="absolute right-0 sm:right-4 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-2 m-2 sm:p-3 transition-all duration-300"
+                                className="absolute right-0 sm:right-4 z-10 bg-white/10 hover:bg-white/20 border border-white/15 rounded-full p-2 m-2 sm:p-3 transition-all duration-300"
                             >
                                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -277,13 +196,7 @@ function Phizzicare() {
 
             </motion.div >
 
-            <motion.div
-                className="pointer-events-none fixed bottom-0 left-0 w-full h-64 bg-gradient-to-t from-white/11 to-transparent blur-9xl"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1.2, ease: "easeOut" }}
-            >
-            </motion.div>
+            <PageBottomGlow />
         </>
     )
 }

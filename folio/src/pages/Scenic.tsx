@@ -1,7 +1,8 @@
 import { easeIn, easeOut, motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Lenis from "lenis";
+import { useRef } from "react";
+import { PageBottomGlow, ProjectHeader } from "../components/ProjectChrome";
+import { useMediaQuery } from "../hooks/useMediaQuery";
+import { useResetScrollOnMount } from "../hooks/useResetScrollOnMount";
 
 const pageVariants = {
     initial: { opacity: 0, x: 50 },
@@ -10,55 +11,11 @@ const pageVariants = {
 };
 
 function Scenic() {
-    const navigate = useNavigate();
     const containerRef = useRef(null);
     const imageRef = useRef(null);
     const graphImageRef = useRef(null);
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth < 560);
-        };
-
-        // Check on mount
-        checkMobile();
-
-        // Check on resize
-        window.addEventListener('resize', checkMobile);
-
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
-
-    // ✅ Initialize Lenis smooth scroll
-    useEffect(() => {
-        const lenis = new Lenis({
-            smoothWheel: true,
-            duration: 1.2,
-            easing: (t) => 1 - Math.pow(1 - t, 3), // easeOutCubic
-        });
-
-        lenis.scrollTo(0, { immediate: true });
-
-        function raf(time: number) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-
-        requestAnimationFrame(raf);
-
-        return () => {
-            lenis.destroy();
-        };
-    }, []);
-
-    // Track scroll progress
-    const { scrollY } = useScroll();
-
-    // Animate values based on scroll
-    const bgOpacity = useTransform(scrollY, [0, 160], [0, 0.6]);
-    const blurAmount = useTransform(scrollY, [0, 160], [0, 48]);
-    const borderOpacity = useTransform(scrollY, [0, 160], [0.2, 0.2]);
+    const isMobile = useMediaQuery("(max-width: 559px)");
+    useResetScrollOnMount();
 
     const { scrollYProgress } = useScroll({
         target: imageRef,
@@ -95,48 +52,7 @@ function Scenic() {
                 transition={{ duration: 0.5, ease: "easeInOut" }}
             >
 
-                {/* HEADER */}
-                <motion.header
-                    className="fixed top-0 left-0 w-full z-10 flex flex-row items-center justify-between px-4 sm:px-8 py-8"
-                    style={{
-                        backgroundColor: useTransform(
-                            bgOpacity,
-                            (opacity) => `rgba(0, 0, 0, ${opacity})`
-                        ),
-                        backdropFilter: useTransform(
-                            blurAmount,
-                            (blur) => `blur(${blur}px)`
-                        ),
-                        borderBottom: useTransform(
-                            borderOpacity,
-                            (opacity) => `1px solid rgba(255, 255, 255, ${opacity})`
-                        ),
-                    }}
-                >
-                    {/* Logo (clickable) */}
-                    <motion.img
-                        src="/assets/AV_logo.png"
-                        alt="AV Logo"
-                        className="h-8 cursor-pointer"
-                        onClick={() =>
-                            navigate("/", { state: { backfromwork: true } })
-                        }
-                        whileHover={{ scale: 1.05, opacity: 0.9 }}
-                        transition={{ duration: 0.2 }}
-                    />
-
-                    {/* Back Button */}
-                    <motion.button
-                        whileHover={{ scale: 0.95, opacity: 0.85 }}
-                        whileTap={{ scale: 1.0, opacity: 0.95 }}
-                        onClick={() =>
-                            navigate("/", { state: { backfromwork: true } })
-                        }
-                        className="font-montserrat font-light"
-                    >
-                        ← back
-                    </motion.button>
-                </motion.header>
+                <ProjectHeader />
 
 
                 {/* MAIN CONTENT */}
@@ -267,13 +183,7 @@ function Scenic() {
 
             </motion.div >
 
-            <motion.div
-                className="pointer-events-none fixed bottom-0 left-0 w-full h-64 bg-gradient-to-t from-white/11 to-transparent blur-9xl"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1.2, ease: "easeOut" }}
-            >
-            </motion.div>
+            <PageBottomGlow />
         </>
     )
 }

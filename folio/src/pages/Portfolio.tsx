@@ -1,7 +1,8 @@
 import { AnimatePresence, easeOut, motion, useScroll, useTransform } from "framer-motion";
-import Lenis from "lenis";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { PageBottomGlow, ProjectHeader } from "../components/ProjectChrome";
+import { useMediaQuery } from "../hooks/useMediaQuery";
+import { useResetScrollOnMount } from "../hooks/useResetScrollOnMount";
 
 
 
@@ -11,56 +12,19 @@ const pageVariants = {
     exit: { opacity: 0, x: -50 },
 };
 
+const images = [
+    "/assets/P1.png",
+    "/assets/P4.png",
+    "/assets/P2.png",
+    "/assets/P3.png",
+    "/assets/portfolioSS.png",
+];
 
 function Portfolio() {
-    const navigate = useNavigate();
-
     const containerRef = useRef(null);
     const graphImageRef = useRef(null);
-
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth < 560);
-        };
-
-        // Check on mount
-        checkMobile();
-
-        // Check on resize
-        window.addEventListener('resize', checkMobile);
-
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
-
-    useEffect(() => {
-        const lenis = new Lenis({
-            smoothWheel: true,
-            duration: 1.2,
-            easing: (t) => 1 - Math.pow(1 - t, 3), // easeOutCubic
-        });
-
-        lenis.scrollTo(0, { immediate: true });
-
-        function raf(time: number) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-
-        requestAnimationFrame(raf);
-
-        return () => {
-            lenis.destroy();
-        };
-    }, []);
-
-    const { scrollY } = useScroll();
-
-    // Animate values based on scroll
-    const bgOpacity = useTransform(scrollY, [0, 160], [0, 0.6]);
-    const blurAmount = useTransform(scrollY, [0, 160], [0, 48]);
-    const borderOpacity = useTransform(scrollY, [0, 160], [0.2, 0.2]);
+    const isMobile = useMediaQuery("(max-width: 559px)");
+    useResetScrollOnMount();
 
     const { scrollYProgress: graphScrollYProgress } = useScroll({
         target: graphImageRef,
@@ -76,21 +40,13 @@ function Portfolio() {
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const images = [
-        "/assets/P1.png",
-        "/assets/P4.png",
-        "/assets/P2.png",
-        "/assets/P3.png",
-        "/assets/portfolioSS.png",
-    ];
-
     useEffect(() => {
         // Preload all gallery images
         images.forEach((src) => {
             const img = new Image();
             img.src = src;
         });
-    }, []); // Empty dependency array = runs once on mount
+    }, []);
 
     return (
         <>
@@ -104,48 +60,7 @@ function Portfolio() {
                 transition={{ duration: 0.5, ease: "easeInOut" }}
             >
 
-                {/* HEADER */}
-                <motion.header
-                    className="fixed top-0 left-0 w-full z-10 flex flex-row items-center justify-between px-4 sm:px-8 py-6 sm:py-8"
-                    style={{
-                        backgroundColor: useTransform(
-                            bgOpacity,
-                            (opacity) => `rgba(0, 0, 0, ${opacity})`
-                        ),
-                        backdropFilter: useTransform(
-                            blurAmount,
-                            (blur) => `blur(${blur}px)`
-                        ),
-                        borderBottom: useTransform(
-                            borderOpacity,
-                            (opacity) => `1px solid rgba(255, 255, 255, ${opacity})`
-                        ),
-                    }}
-                >
-                    {/* Logo (clickable) */}
-                    <motion.img
-                        src="/assets/AV_logo.png"
-                        alt="AV Logo"
-                        className="h-8 cursor-pointer"
-                        onClick={() =>
-                            navigate("/", { state: { backfromwork: true } })
-                        }
-                        whileHover={{ scale: 1.05, opacity: 0.9 }}
-                        transition={{ duration: 0.2 }}
-                    />
-
-                    {/* Back Button */}
-                    <motion.button
-                        whileHover={{ scale: 0.95, opacity: 0.85 }}
-                        whileTap={{ scale: 1.0, opacity: 0.95 }}
-                        onClick={() =>
-                            navigate("/", { state: { backfromwork: true } })
-                        }
-                        className="font-montserrat font-light"
-                    >
-                        ← back
-                    </motion.button>
-                </motion.header>
+                <ProjectHeader />
 
 
                 <div className="flex flex-col items-center px-4 sm:px-8 pt-32 pb-8 sm:pb-12 lg:pb-28">
@@ -221,7 +136,7 @@ function Portfolio() {
                         {/* Left Arrow */}
                         <button
                             onClick={() => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length)}
-                            className="bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-2 sm:p-3 transition-all duration-300 flex-shrink-0"
+                            className="bg-white/10 hover:bg-white/20 border border-white/15 rounded-full p-2 sm:p-3 transition-all duration-300 flex-shrink-0"
                         >
                             <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -247,7 +162,7 @@ function Portfolio() {
                         {/* Right Arrow */}
                         <button
                             onClick={() => setCurrentIndex((prev) => (prev + 1) % images.length)}
-                            className="bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-2 sm:p-3 transition-all duration-300 flex-shrink-0"
+                            className="bg-white/10 hover:bg-white/20 border border-white/15 rounded-full p-2 sm:p-3 transition-all duration-300 flex-shrink-0"
                         >
                             <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -271,13 +186,7 @@ function Portfolio() {
 
             <div className="h-[180px] lg:h-[0px]" />
 
-            <motion.div
-                className="pointer-events-none fixed bottom-0 left-0 w-full h-64 bg-gradient-to-t from-white/11 to-transparent blur-9xl"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1.2, ease: "easeOut" }}
-            >
-            </motion.div>
+            <PageBottomGlow />
         </>
     )
 }

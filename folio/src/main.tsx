@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
 import App from './pages/App.tsx'
+import './tailwind.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

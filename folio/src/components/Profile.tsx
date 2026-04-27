@@ -1,22 +1,11 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import ContactSquares from './ContactSquares';
-import { useRef, useEffect, useState } from 'react';
+import { useRef } from 'react';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 
 function Profile() {
     const containerRef = useRef<HTMLDivElement>(null);
-    const [isMobile, setIsMobile] = useState(false);
-
-    // Handle responsive check properly
-    useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth < 768);
-        };
-
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
+    const isMobile = useMediaQuery("(max-width: 767px)");
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -27,7 +16,7 @@ function Profile() {
     const wordsY = useTransform(
         scrollYProgress,
         [0, 1],
-        [isMobile ? 50 : 200, 0], // Starts 100px down (50px on mobile), ends at 0
+        [isMobile ? 50 : 200, 0],
     );
 
     return (

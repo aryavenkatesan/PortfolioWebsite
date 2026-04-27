@@ -6,14 +6,14 @@ import {
     useMemo,
     type FC,
     type ReactNode,
-    useState,
 } from "react";
 
 import * as THREE from "three";
 
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
 import { degToRad } from "three/src/math/MathUtils.js";
+import type { PerformanceTier } from "../hooks/usePerformanceTier";
 
 type UniformValue = THREE.IUniform<unknown> | unknown;
 
@@ -90,22 +90,20 @@ function extendMaterial<T extends THREE.Material = THREE.Material>(
     return mat;
 }
 
-const CanvasWrapper: FC<{ children: ReactNode }> = ({ children }) => {
-    // Add cleanup for Canvas
-    useEffect(() => {
-        return () => {
-            // Force garbage collection hint
-            if (typeof window !== 'undefined' && 'gc' in window) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (window as any).gc();
-            }
-        };
-    }, []);
+const qualityConfig: Record<PerformanceTier, { dpr: number; frameMs: number; segments: number }> = {
+    high: { dpr: 1.25, frameMs: 16, segments: 6 },
+    balanced: { dpr: 1, frameMs: 28, segments: 5 },
+    low: { dpr: 0.8, frameMs: 42, segments: 4 },
+};
 
+const CanvasWrapper: FC<{
+    children: ReactNode;
+    dpr: number;
+}> = ({ children, dpr }) => {
     return (
         <Canvas
-            dpr={1}
-            frameloop="always"
+            dpr={dpr}
+            frameloop="demand"
             className="beams-container"
             gl={{
                 antialias: false,
@@ -216,6 +214,8 @@ interface BeamsProps {
     noiseIntensity?: number;
     scale?: number;
     rotation?: number;
+    quality?: PerformanceTier;
+    paused?: boolean;
 }
 
 const Beams: FC<BeamsProps> = ({
@@ -227,6 +227,8 @@ const Beams: FC<BeamsProps> = ({
     noiseIntensity = 1.75,
     scale = 0.2,
     rotation = 0,
+    quality = "balanced",
+    paused = false,
 }) => {
     const meshRef = useRef<
         THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>
@@ -322,20 +324,24 @@ const Beams: FC<BeamsProps> = ({
 
     // Cleanup mesh on unmount
     useEffect(() => {
+        const mesh = meshRef.current;
+
         return () => {
-            if (meshRef.current) {
-                meshRef.current.geometry.dispose();
-                if (Array.isArray(meshRef.current.material)) {
-                    meshRef.current.material.forEach(mat => mat.dispose());
+            if (mesh) {
+                mesh.geometry.dispose();
+                if (Array.isArray(mesh.material)) {
+                    mesh.material.forEach(mat => mat.dispose());
                 } else {
-                    meshRef.current.material.dispose();
+                    mesh.material.dispose();
                 }
             }
         };
     }, []);
 
+    const config = qualityConfig[quality];
+
     return (
-        <CanvasWrapper>
+        <CanvasWrapper dpr={config.dpr}>
             <group rotation={[0, 0, degToRad(rotation)]}>
                 <PlaneNoise
                     ref={meshRef}
@@ -343,6 +349,8 @@ const Beams: FC<BeamsProps> = ({
                     count={beamNumber}
                     width={beamWidth}
                     height={beamHeight}
+                    quality={quality}
+                    paused={paused}
                 />
                 <DirLight color={lightColor} position={[0, 3, 10]} />
             </group>
@@ -422,18 +430,21 @@ const MergedPlanes = forwardRef<
         width: number;
         count: number;
         height: number;
+        quality: PerformanceTier;
+        paused: boolean;
     }
->(({ material, width, count, height }, ref) => {
+>(({ material, width, count, height, quality, paused }, ref) => {
     const mesh = useRef<THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>>(
         null!
     );
-    const frameId = useRef<number>(0);
+    const { invalidate } = useThree();
 
     useImperativeHandle(ref, () => mesh.current);
 
+    const config = qualityConfig[quality];
     const geometry = useMemo(
-        () => createStackedPlanesBufferGeometry(count, width, height, 0, 6),
-        [count, width, height]
+        () => createStackedPlanesBufferGeometry(count, width, height, 0, config.segments),
+        [config.segments, count, width, height]
     );
 
     // Cleanup geometry when dependencies change
@@ -443,20 +454,49 @@ const MergedPlanes = forwardRef<
         };
     }, [geometry]);
 
-    // Animation with cleanup
-    useFrame((_, delta) => {
-        if (mesh.current && mesh.current.material.uniforms.time) {
-            frameId.current++;
-            mesh.current.material.uniforms.time.value += 0.06 * delta;
-        }
-    });
+    useEffect(() => {
+        let frameId = 0;
+        let timeoutId = 0;
+        let lastFrame = performance.now();
+
+        const update = (time: number) => {
+            const shouldRender = !paused && document.visibilityState === "visible";
+            if (!shouldRender) {
+                lastFrame = time;
+                timeoutId = window.setTimeout(() => {
+                    frameId = window.requestAnimationFrame(update);
+                }, 250);
+                return;
+            }
+
+            if (time - lastFrame >= config.frameMs && mesh.current?.material.uniforms.time) {
+                const delta = Math.min((time - lastFrame) / 1000, 0.035);
+                mesh.current.material.uniforms.time.value += 0.9 * delta;
+                lastFrame = time;
+                invalidate();
+            }
+
+            timeoutId = window.setTimeout(() => {
+                frameId = window.requestAnimationFrame(update);
+            }, config.frameMs);
+        };
+
+        frameId = window.requestAnimationFrame(update);
+
+        return () => {
+            window.cancelAnimationFrame(frameId);
+            window.clearTimeout(timeoutId);
+        };
+    }, [config.frameMs, invalidate, paused]);
 
     // Cleanup on unmount
     useEffect(() => {
+        const currentMesh = mesh.current;
+
         return () => {
-            if (mesh.current) {
-                mesh.current.geometry.dispose();
-                mesh.current.material.dispose();
+            if (currentMesh) {
+                currentMesh.geometry.dispose();
+                currentMesh.material.dispose();
             }
         };
     }, []);
@@ -472,6 +512,8 @@ const PlaneNoise = forwardRef<
         width: number;
         count: number;
         height: number;
+        quality: PerformanceTier;
+        paused: boolean;
     }
 >((props, ref) => (
     <MergedPlanes
@@ -480,6 +522,8 @@ const PlaneNoise = forwardRef<
         width={props.width}
         count={props.count}
         height={props.height}
+        quality={props.quality}
+        paused={props.paused}
     />
 ));
 PlaneNoise.displayName = "PlaneNoise";
@@ -491,8 +535,10 @@ const DirLight: FC<{ position: [number, number, number]; color: string }> = ({
     const dir = useRef<THREE.DirectionalLight>(null!);
 
     useEffect(() => {
-        if (!dir.current) return;
-        const cam = dir.current.shadow.camera as THREE.Camera & {
+        const light = dir.current;
+
+        if (!light) return;
+        const cam = light.shadow.camera as THREE.Camera & {
             top: number;
             bottom: number;
             left: number;
@@ -504,12 +550,12 @@ const DirLight: FC<{ position: [number, number, number]; color: string }> = ({
         cam.left = -24;
         cam.right = 24;
         cam.far = 64;
-        dir.current.shadow.bias = -0.004;
+        light.shadow.bias = -0.004;
 
         // Cleanup shadow map on unmount
         return () => {
-            if (dir.current && dir.current.shadow && dir.current.shadow.map) {
-                dir.current.shadow.map.dispose();
+            if (light.shadow && light.shadow.map) {
+                light.shadow.map.dispose();
             }
         };
     }, []);

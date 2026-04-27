@@ -3,32 +3,17 @@ import { AnimatePresence } from 'framer-motion'
 import MainPage from './MainPage'
 import Cursor from '../components/Cursor'
 import VDart from './VDart'
-import { useEffect, useState } from 'react'
 import Swipeshare from './Swipeshare'
 import Scenic from './Scenic'
 import Research from './Research'
 import Portfolio from './Portfolio'
 import Phizzicare from './Phizzicare'
+import { useMediaQuery } from '../hooks/useMediaQuery'
+import { SmoothScrollProvider } from '../components/SmoothScrollProvider'
 
 function AppRoutes() {
   const location = useLocation();
-  const [showCursor, setShowCursor] = useState<boolean>(false);
-
-  useEffect(() => {
-    // Function to check viewport
-    const checkIsDesktop = () => {
-      setShowCursor(window.innerWidth >= 1024); // >= 1024px = desktop (Tailwind 'lg')
-    };
-
-    // Run on mount
-    checkIsDesktop();
-    // Run on resize
-    window.addEventListener("resize", checkIsDesktop);
-
-    return () => {
-      window.removeEventListener("resize", checkIsDesktop);
-    };
-  }, []);
+  const showCursor = useMediaQuery("(min-width: 1024px) and (pointer: fine)");
 
   return (
     <div className={`bg-black ${showCursor ? "cursor-none" : "cursor-auto"}`}>
@@ -49,7 +34,11 @@ function AppRoutes() {
 }
 
 function App() {
-  return <AppRoutes />
+  return (
+    <SmoothScrollProvider>
+      <AppRoutes />
+    </SmoothScrollProvider>
+  )
 }
 
 export default App

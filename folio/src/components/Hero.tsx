@@ -1,9 +1,11 @@
 import { easeIn, easeInOut, easeOut, motion, useScroll, useTransform } from "framer-motion"
 import { useRef } from "react"
 import ContactSquares from "./ContactSquares"
+import { useMediaQuery } from "../hooks/useMediaQuery"
 
 function Hero({ onArrowClick }: { onArrowClick?: () => void }) {
     const containerRef = useRef(null)
+    const isMobile = useMediaQuery("(max-width: 767px)")
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end start"],
@@ -15,7 +17,6 @@ function Hero({ onArrowClick }: { onArrowClick?: () => void }) {
     })
 
     // Tagline animations
-    const isMobile = window.innerWidth < 768
     const taglineY = useTransform(
         scrollYProgress,
         [0, 0.55],
@@ -44,7 +45,7 @@ function Hero({ onArrowClick }: { onArrowClick?: () => void }) {
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 3, delay: 1.6 }}
                             >
-                                <div className="w-[1200px] h-[350px] bg-white/6 md:bg-white/10 rounded-full blur-lg md:blur-3xl mb-20" />
+                                <div className="mb-20 h-[350px] w-[1200px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.1)_24%,rgba(255,255,255,0.03)_48%,rgba(255,255,255,0)_72%)]" />
                             </motion.div>
                         </motion.div>
                         <div className="flex flex-col justify-center h-full relative">
@@ -124,7 +125,12 @@ function Hero({ onArrowClick }: { onArrowClick?: () => void }) {
                             }}
                             onClick={() => { onArrowClick?.() }}
                         >
-                            {/* Arrow body with proper drawing animation */}
+                            <defs>
+                                <clipPath id="arrowClip">
+                                    <rect x="0" y="5" width="40" height="80" />
+                                </clipPath>
+                            </defs>
+
                             <motion.path
                                 d="M20 5 L20 85"
                                 stroke="rgba(205, 205, 205, 0.85)"
@@ -144,27 +150,6 @@ function Hero({ onArrowClick }: { onArrowClick?: () => void }) {
                                     ease: 'easeInOut'
                                 }}
                             />
-
-                            {/* Overlay for erasing effect - draws in reverse */}
-                            <clipPath id="arrowClip">
-                                <motion.rect
-                                    x="0"
-                                    y="5"
-                                    width="40"
-                                    height="80"
-                                    animate={{
-                                        height: [0, 80, 80, 0, 0],
-                                        y: [5, 5, 5, 85, 85],
-                                        opacity: [1, 1, 1, 0, 1]
-                                    }}
-                                    transition={{
-                                        duration: 5,
-                                        times: [0, 0.3, 0.6, 0.875, 1],
-                                        repeat: Infinity,
-                                        ease: 'easeInOut'
-                                    }}
-                                />
-                            </clipPath>
 
                             {/* Arrow head */}
                             <motion.path
@@ -189,7 +174,7 @@ function Hero({ onArrowClick }: { onArrowClick?: () => void }) {
                         <p className="-z-50">.</p>
                     </footer>
                     <motion.div className="absolute inset-0 flex items-baseline justify-center pointer-events-none will-change-opacity" style={{ opacity: aura }}>
-                        <div className="w-full h-[150px] bg-white/4 md:bg-white/6 rounded-full blur-lg md:blur-3xl mb-20" />
+                        <div className="mb-20 h-[150px] w-full rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.14)_0%,rgba(255,255,255,0.08)_32%,rgba(255,255,255,0)_72%)]" />
                     </motion.div>
                 </motion.div>
             </motion.div>
